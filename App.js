@@ -1,110 +1,32 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
+import LoginScreen from './src/screens/LoginScreen';
+import HomeScreen from './src/screens/HomeScreen';
+
+const Stack = createNativeStackNavigator();
+
 export default function App() {
-  const [cpf, setCpf] = useState('');
-  const [dataNasc, setDataNasc] = useState('');
-  const [tel, setTel] = useState('');
-
-  const fazerLogin = async () => {
-    const pacoteParaAPI = {
-      cpf       : cpf,
-      dataNasc  : dataNasc,
-      tel       : tel
-    };
-    
-    console.log("Enviando pacote...", pacoteParaAPI);
-
-    try {
-      const resposta = await fetch('http://192.168.1.30:3000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(pacoteParaAPI)
-      });
-
-      const dados = await resposta.json();
-
-      if (resposta.status === 200) {
-        console.log("✅ DEU BOM:", dados.mensagem);
-        alert(dados.mensagem);
-      } else {
-        console.log("❌ DEU RUIM:", dados.mensagem);
-        alert(dados.mensagem);
-      }
-    } catch (error) {
-      console.log("🚨 Falha na rede. O servidor Node está ligado?", error);
-      alert("Erro de conexão com o servidor.");
-    }
-  }
-
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.titulo}>NotificaPag</Text>
-        <Text style={styles.subtitulo}>Digite seus dados para acessar</Text>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Digite seu CPF"
-          keyboardType="numeric"
-          maxLength={11}
-          value={cpf}
-          onChangeText={setCpf}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Digite sua data de nascimento"
-          keyboardType="numeric"
-          maxLength={10}
-          value={dataNasc}
-          onChangeText={setDataNasc}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Digite seu telefone"
-          keyboardType="numeric"
-          value={tel}
-          onChangeText={setTel}
-        />
-        <Button
-          title="Entrar no NotificaPag"
-          onPress={fazerLogin}
-        />
-      </SafeAreaView>
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{ title: 'Minhas Faturas' }}
+          />
+
+        </Stack.Navigator>
+      </NavigationContainer>
     </SafeAreaProvider>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#f5f5f5',
-    justifyContent: 'center',
-    padding: 20,
-  },
-  titulo: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  subtitulo: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    marginBottom: 30,
-  },
-  input: {
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 15,
-    fontSize: 16,
-    marginBottom: 15,
-  }
-});
+}
