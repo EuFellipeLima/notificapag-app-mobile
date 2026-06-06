@@ -1,11 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen({ navigation }) {
   const [cpf, setCpf] = useState('');
   const [dataNasc, setDataNasc] = useState('');
   const [tel, setTel] = useState('');
+
+  useEffect(() => {
+    const checarLoginSalvo = async () => {
+      try {
+        const cpfSalvo = await AsyncStorage.getItem('@NotificaPag:cpf');
+        if (cpfSalvo !== null) {
+          navigation.replace('Home', {cpf: cpfSalvo });
+        }
+      } catch (error) {
+        console.log("Erro ao buscar CPF no armazenamento", error);
+      }
+    };
+    checarLoginSalvo();
+  }, []);
 
   const fazerLogin = async () => {
     const pacoteParaAPI = {
@@ -28,7 +43,8 @@ export default function LoginScreen({ navigation }) {
       const dados = await resposta.json();
 
       if (resposta.status === 200) {
-        navigation.navigate('Home', { cpf: cpf });
+        await AsyncStorage.setItem('@NotificaPag:cpf', cpf);
+        navigation.replace('Home', { cpf: cpf });
       } else {
         alert(dados.mensagem);
       }

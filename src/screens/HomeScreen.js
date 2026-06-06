@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function HomeScreen({ route }) {
+export default function HomeScreen({ route, navigation }) {
     const { cpf } = route.params;
-
     const [dadosCliente, setDadosCliente] = useState({ nome: '', parcelas: [] });
 
     useEffect(() => {
@@ -26,6 +26,15 @@ export default function HomeScreen({ route }) {
         if (status === 'paga') return 'green';
         if (status === 'aberta') return '#f1c40f';
         return 'red';
+    }
+
+    const fazerLogout = async () => {
+        try {
+            await AsyncStorage.removeItem('@NotificaPag:cpf');
+            navigation.replace('Login');
+        } catch (error) {
+            console.log("Erro ao fazer logout", error);
+        }
     }
 
     return(
@@ -50,6 +59,10 @@ export default function HomeScreen({ route }) {
                     </View>
                 )}
             />
+
+            <View style={styles.botaoSairConta}>
+                 <Button title="Sair da Conta" color="#e74c3c" onPress={fazerLogout} />
+            </View>
         </SafeAreaView>
     )
 }
@@ -73,5 +86,6 @@ const styles = StyleSheet.create({
     infoRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
     textoValor: { fontSize: 20, fontWeight: 'bold', color: '#2c3e50' },
     status: { fontWeight: 'bold', fontSize: 12 },
-    data: { color: '#7f8c8d', marginTop: 8, fontSize: 14 }
+    data: { color: '#7f8c8d', marginTop: 8, fontSize: 14 },
+    botaoSairConta: { marginTop: 20 }
 });
