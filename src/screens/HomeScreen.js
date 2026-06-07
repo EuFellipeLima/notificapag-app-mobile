@@ -12,13 +12,31 @@ export default function HomeScreen({ route, navigation }) {
     }, []);
 
     const carregarDados = async () => {
+        const CACHE_KEY = `@NotificaPag:faturas_${cpf}`
+
+        try {
+            const faturasSalvas = await AsyncStorage.getItem(CACHE_KEY);
+            if (faturasSalvas !== null) {
+                console.log("Dados carregados do Cache local");
+                setDadosCliente(JSON.parse(faturasSalvas));
+            }
+        } catch (error) {
+            console.log("Erro ao ler cache local", error);
+        }
+
         try {
             const resposta = await fetch(`http://192.168.1.30:3000/parcelas/${cpf}`);
-            const resultado = await resposta.json();
+            
+            if (resposta.status === 200) {
+                const resultado = await resposta.json();
+                console.log("Dados atualizados via API");
+                
+                setDadosCliente(resultado);
 
-            setDadosCliente(resultado);
+                await AsyncStorage.setItem(CACHE_KEY, JSON.stringify(resultado));
+            }
         } catch (error) {
-            console.log("Erro ao buscar dados", error);
+            console.log("Dispositivo offline ou API fora do ar. Mantendo cache local.", error);
         }
     };
 
@@ -30,7 +48,11 @@ export default function HomeScreen({ route, navigation }) {
 
     const fazerLogout = async () => {
         try {
+            const CACHE_KEY = `@NotificaPag:faturas_${cpf}`;
+
             await AsyncStorage.removeItem(`@NotificaPag:cpf`);
+            await AsyncStorage.removeItem(CACHE_KEY);
+            
             navigation.replace('Login');
         } catch (error) {
             console.log("Erro ao fazer logout", error);
