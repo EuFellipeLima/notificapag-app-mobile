@@ -11,7 +11,7 @@ export default function LoginScreen({ navigation }) {
   useEffect(() => {
     const checarLoginSalvo = async () => {
       try {
-        const cpfSalvo = await AsyncStorage.getItem('@NotificaPag:cpf');
+        const cpfSalvo = await AsyncStorage.getItem(`@NotificaPag:cpf`);
         if (cpfSalvo !== null) {
           navigation.replace('Home', {cpf: cpfSalvo });
         }
@@ -32,7 +32,7 @@ export default function LoginScreen({ navigation }) {
     console.log("Enviando pacote...", pacoteParaAPI);
 
     try {
-      const resposta = await fetch('http://192.168.1.30:3000/login', {
+      const resposta = await fetch(`http://192.168.1.30:3000/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export default function LoginScreen({ navigation }) {
       const dados = await resposta.json();
 
       if (resposta.status === 200) {
-        await AsyncStorage.setItem('@NotificaPag:cpf', cpf);
+        await AsyncStorage.setItem(`@NotificaPag:cpf`, cpf);
         navigation.replace('Home', { cpf: cpf });
       } else {
         alert(dados.mensagem);

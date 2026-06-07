@@ -30,7 +30,7 @@ export default function HomeScreen({ route, navigation }) {
 
     const fazerLogout = async () => {
         try {
-            await AsyncStorage.removeItem('@NotificaPag:cpf');
+            await AsyncStorage.removeItem(`@NotificaPag:cpf`);
             navigation.replace('Login');
         } catch (error) {
             console.log("Erro ao fazer logout", error);
