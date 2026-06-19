@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "notificapag",
+    "name": "NotificaPag",
     "slug": "snack-57c8a230-a7c1-4dc3-b1ad-63dc4d251311",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -17,8 +17,9 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundImage": "./assets/ic_launcher_background.png",
+        "foregroundImage": "./assets/ic_launcher_foreground.png",
+        "monochromeImage": "./assets/ic_launcher_monochrome.png"
       },
       "edgeToEdgeEnabled": true,
       "package": "dev.felima.notificapag"
