@@ -23,6 +23,22 @@ export default function LoginScreen({ navigation }) {
     checarLoginSalvo();
   }, []);
 
+  const aplicarMascaraData = (texto) => {
+    const apenasNumeros = texto.replace(/\D/g, '');
+
+    let textoFormatado = apenasNumeros;
+
+    if (apenasNumeros.length > 2) {
+      textoFormatado = `${apenasNumeros.slice(0, 2)}-${apenasNumeros.slice(2)}`
+    }
+    
+    if (apenasNumeros.length > 4) {
+      textoFormatado = `${apenasNumeros.slice(0, 2)}-${apenasNumeros.slice(2, 4)}-${apenasNumeros.slice(4, 8)}`;
+    }
+
+    setDataNasc(textoFormatado);
+  }
+
   const fazerLogin = async () => {
     const pacoteParaAPI = {
       cpf       : cpf,
@@ -68,14 +84,14 @@ export default function LoginScreen({ navigation }) {
       value={cpf}
       onChangeText={setCpf}
     />
-    <TextInput
+<TextInput
       style={styles.input}
       placeholder="Digite sua data de nascimento"
       placeholderTextColor="#999"
       keyboardType="numeric"
       maxLength={10}
       value={dataNasc}
-      onChangeText={setDataNasc}
+      onChangeText={aplicarMascaraData}
     />
     <TextInput
       style={styles.input}
