@@ -25,7 +25,7 @@ export default function HomeScreen({ route, navigation }) {
         }
 
         try {
-            const resposta = await fetch(`http://192.168.1.30:3000/parcelas/${cpf}`);
+            const resposta = await fetch(`https://notificapag-api-core.onrender.com/parcelas/${cpf}`);
             
             if (resposta.status === 200) {
                 const resultado = await resposta.json();

@@ -32,7 +32,7 @@ export default function LoginScreen({ navigation }) {
     console.log("Enviando pacote...", pacoteParaAPI);
 
     try {
-      const resposta = await fetch(`http://192.168.1.30:3000/login`, {
+      const resposta = await fetch(`https://notificapag-api-core.onrender.com/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
