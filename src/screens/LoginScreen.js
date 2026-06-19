@@ -62,6 +62,7 @@ export default function LoginScreen({ navigation }) {
     <TextInput
       style={styles.input}
       placeholder="Digite seu CPF"
+      placeholderTextColor="#999"
       keyboardType="numeric"
       maxLength={11}
       value={cpf}
@@ -70,6 +71,7 @@ export default function LoginScreen({ navigation }) {
     <TextInput
       style={styles.input}
       placeholder="Digite sua data de nascimento"
+      placeholderTextColor="#999"
       keyboardType="numeric"
       maxLength={10}
       value={dataNasc}
@@ -78,6 +80,7 @@ export default function LoginScreen({ navigation }) {
     <TextInput
       style={styles.input}
       placeholder="Digite seu telefone"
+      placeholderTextColor="#999"
       keyboardType="numeric"
       value={tel}
       onChangeText={setTel}
@@ -118,5 +121,6 @@ const styles = StyleSheet.create({
     padding: 15,
     fontSize: 16,
     marginBottom: 15,
+    color: '#333'
   }
 });
