@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Device from 'expo-device';
 
 export default function LoginScreen({ navigation }) {
   const [cpf, setCpf] = useState('');
@@ -36,6 +37,7 @@ export default function LoginScreen({ navigation }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'x-device-id': `${Device.brand} ${Device.modelName}`
         },
         body: JSON.stringify(pacoteParaAPI)
       });
