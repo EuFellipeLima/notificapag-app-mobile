@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Device from 'expo-device';
 
 export default function HomeScreen({ route, navigation }) {
     const { cpf } = route.params;
@@ -25,7 +26,13 @@ export default function HomeScreen({ route, navigation }) {
         }
 
         try {
-            const resposta = await fetch(`https://notificapag-api-core.onrender.com/parcelas/${cpf}`);
+            const resposta = await fetch(`https://notificapag-api-core.onrender.com/parcelas/${cpf}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-device-id': `${Device.brand} ${Device.modelName}`
+                }
+            });
             
             if (resposta.status === 200) {
                 const resultado = await resposta.json();
